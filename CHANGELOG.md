@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 (12-04-2026)
+
+- added RBAC
+- updated docs
+
 ## 2.0.0 (29-03-2026)
 
 - added Better-Auth

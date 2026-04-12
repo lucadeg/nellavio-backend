@@ -6,10 +6,11 @@
   </ul>
 </div>
 
+<h4 align="center">Open source Node.js backend for Nellavio dashboard</h4>
 <div align="center">
-  <a href="https://github.com/nellavio/nellavio-backend/blob/master/CHANGELOG.md" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/%20-changelog-blue?logo=readme&logoColor=white&labelColor=grey" alt="Changelog" />
-  </a>
+
+[Getting Started](#how-to-run) &nbsp; [Data Viewer](https://data-viewer.nellavio.com) &nbsp; [Changelog](https://github.com/nellavio/nellavio/blob/main/CHANGELOG.md)
+
   <a href="https://github.com/nellavio/nellavio-backend/blob/master/license" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/license-MIT-blue" alt="License" />
   </a>
@@ -17,9 +18,6 @@
     <img src="https://img.shields.io/github/package-json/v/nellavio/nellavio-backend?color=green" alt="Version" />
   </a>
 </div>
-
-<h4 align="center">Open source Node.js backend for Nellavio dashboard</h4>
-<br />
 
 ## Overview
 
