@@ -23,7 +23,7 @@
 
 ## Overview
 
-It provides data for [Nellavio](https://github.com/nellavio/nellavio) - an open source dashboard starter built with Next.js & TypeScript. The GraphQL API serves 20+ queries covering homepage metrics, orders, customers, products, analytics and more, while the Better Auth enables production-ready authentication flow, handling session management and user credentials.
+It provides data for [Nellavio](https://github.com/nellavio/nellavio) - an open source dashboard starter built with Next.js & TypeScript. The GraphQL API serves 20+ queries covering homepage metrics, orders, customers, products, analytics and more. Better Auth enables a production-ready authentication flow, handling session management, user credentials and RBAC with three roles (admin, editor, viewer) enforced via the admin plugin.
 
 The frontend works independently by default - it loads mock data from `backendBackup.json` and keeps route protection disabled. Connecting this backend enables real database functionality, live data fetching on each request and a complete authentication system.
 
@@ -35,6 +35,7 @@ Node.js, Fastify, PostgreSQL, Prisma, GraphQL, Docker, Better Auth
 
 - `/graphql` - GraphQL API with 20+ queries (products, orders, customers, analytics, etc.)
 - `/api/auth/*` - Better Auth endpoints (sign-in, sign-up, session management)
+- `/api/auth/admin/*` - Admin endpoints (list-users, set-role, ban-user, update-user, etc.) - requires admin role
 - `/health` - Health check endpoint for monitoring
 
 ## Project Structure
@@ -52,6 +53,7 @@ Node.js, Fastify, PostgreSQL, Prisma, GraphQL, Docker, Better Auth
 │   │   └── types.ts         # GraphQL type definitions
 │   ├── tests                # Test files
 │   │   └── helpers          # Test utilities
+│   ├── access.ts            # RBAC role & permission definitions
 │   ├── auth.ts              # Better Auth configuration
 │   ├── config.ts            # Environment validation
 │   ├── db.ts                # Prisma client
@@ -114,6 +116,16 @@ Server will be available at:
 - Better Auth: `http://localhost:4000/api/auth`
 - Health check: `http://localhost:4000/health`
 
+7. Set up the first admin (optional):
+
+New users are assigned the `viewer` role by default. To grant admin access, register a user through the frontend and then run:
+
+```bash
+npx prisma studio
+```
+
+Open the `User` table, find your user, change `role` from `viewer` to `admin`, and save. Sign out and sign back in to refresh your session.
+
 ### Remote Deployment
 
 Set up a PostgreSQL database on your hosting platform, then configure environment variables
@@ -136,6 +148,12 @@ After the first deployment, you need to seed the database with initial data. Set
 ### Connecting Frontend
 
 After deploying backend, you can update your front-end `.env` file. Follow front-end README.md for specific instructions.
+
+### RBAC implementation
+
+Roles and permissions are defined in `src/access.ts` using Better Auth's `createAccessControl`. Three roles - **admin**, **editor** and **viewer** - each declare per-resource permissions (dashboard, analytics, orders, customers, products). The admin role additionally inherits Better Auth's built-in admin statements (`adminAc`), which grant access to user management endpoints.
+
+The roles are registered in `src/auth.ts` via the `admin` plugin with `viewer` as the default role. Admin endpoints (`/api/auth/admin/*`) such as `list-users`, `set-role` and `ban-user` are restricted to users with the admin role and use cookie-based session authentication. GraphQL resolvers currently use a binary auth gate (authenticated or not) - the per-resource permissions are ready to be checked in resolvers when needed.
 
 ## Available Commands
 

@@ -5,7 +5,9 @@
 
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { admin } from "better-auth/plugins";
 
+import { ac, adminRole, editorRole, viewerRole } from "./access.js";
 import { prisma } from "./db.js";
 
 export const auth = betterAuth({
@@ -42,6 +44,19 @@ export const auth = betterAuth({
           .split(",")
           .filter((o) => o.trim().length > 0)
       : ["http://localhost:3000", "http://localhost:4000"],
+
+  /** RBAC: Admin plugin with access control roles */
+  plugins: [
+    admin({
+      ac,
+      roles: {
+        admin: adminRole,
+        editor: editorRole,
+        viewer: viewerRole,
+      },
+      defaultRole: "viewer",
+    }),
+  ],
 
   /** Email verification (placeholder - implement with SendGrid, AWS SES, etc.) */
   emailVerification: {
