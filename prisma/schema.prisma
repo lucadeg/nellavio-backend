@@ -158,23 +158,6 @@ model TodaySales {
   @@map("today_sales")
 }
 
-model TotalProfitMonth {
-  id    String @id @default(uuid())
-  month String
-  sales Float
-
-  @@map("total_profit_months")
-}
-
-model TotalProfitProduct {
-  id     String @id @default(uuid())
-  title  String
-  value  Float
-  metric String
-
-  @@map("total_profit_products")
-}
-
 model YearOverview {
   id      String @id @default(uuid())
   name    String
@@ -195,13 +178,50 @@ model MarketMetrics {
   @@map("market_metrics")
 }
 
-model RevenueDistribution {
-  id       String @id @default(uuid())
-  category String
-  inStore  Int
-  online   Int
+model Kpi {
+  id     String @id @default(uuid())
+  key    String
+  value  Float
+  change Float
+  format String
 
-  @@map("revenue_distribution")
+  @@map("kpis")
+}
+
+model RecentTransaction {
+  id       String @id @default(uuid())
+  orderId  String
+  product  String
+  category String
+  amount   Float
+  status   String
+
+  @@map("recent_transactions")
+}
+
+model TopCustomer {
+  id     String @id @default(uuid())
+  name   String
+  handle String
+  amount Float
+  tier   String
+
+  @@map("top_customers")
+}
+
+model SalesChannel {
+  id    String @id @default(uuid())
+  key   String
+  share Int
+
+  @@map("sales_channels")
+}
+
+model AnalyticsSummary {
+  id              String @id @default(uuid())
+  todaySalesTotal Float
+
+  @@map("analytics_summary")
 }
 
 model WeeklyPerformance {

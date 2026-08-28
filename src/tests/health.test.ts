@@ -9,6 +9,7 @@ import {
   it,
 } from "vitest";
 
+import packageJson from "../../package.json";
 import { createTestApp } from "./helpers/buildTestApp.js";
 import { mockPrisma } from "./helpers/mockPrisma.js";
 
@@ -82,7 +83,7 @@ describe("Health endpoint", () => {
     const response = await app.inject({ method: "GET", url: "/health" });
     const body = response.json();
 
-    expect(body.version.api).toBe("2.0.0");
+    expect(body.version.api).toBe(packageJson.version);
   });
 
   it("ready=false when DB is unhealthy", async () => {

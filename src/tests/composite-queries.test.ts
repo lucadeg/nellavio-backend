@@ -21,16 +21,18 @@ const sendGraphQL = (app: FastifyInstance, query: string) =>
     payload: JSON.stringify({ query }),
   });
 
-/** Helper: mock all 8 analytics sub-resolvers with empty arrays */
+/** Helper: mock all 10 analytics sub-resolvers with empty results */
 const mockAllAnalytics = () => {
   mockPrisma.asset.findMany.mockResolvedValue([]);
   mockPrisma.revenueTrend.findMany.mockResolvedValue([]);
   mockPrisma.todaySales.findMany.mockResolvedValue([]);
-  mockPrisma.totalProfitProduct.findMany.mockResolvedValue([]);
-  mockPrisma.totalProfitMonth.findMany.mockResolvedValue([]);
   mockPrisma.yearOverview.findMany.mockResolvedValue([]);
   mockPrisma.marketMetrics.findMany.mockResolvedValue([]);
-  mockPrisma.revenueDistribution.findMany.mockResolvedValue([]);
+  mockPrisma.kpi.findMany.mockResolvedValue([]);
+  mockPrisma.recentTransaction.findMany.mockResolvedValue([]);
+  mockPrisma.topCustomer.findMany.mockResolvedValue([]);
+  mockPrisma.salesChannel.findMany.mockResolvedValue([]);
+  mockPrisma.analyticsSummary.findFirst.mockResolvedValue(null);
 };
 
 /** Helper: mock all 8 homepage sub-resolvers with empty arrays */

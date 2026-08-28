@@ -1,13 +1,15 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
+import { analyticsSummaryData } from "../src/data/analytics/analyticsSummary.js";
 import { assetPerformanceData } from "../src/data/analytics/assetPerformance.js";
+import { kpisData } from "../src/data/analytics/kpis.js";
 import { marketMetricsData } from "../src/data/analytics/marketMetrics.js";
-import { revenueDistributionData } from "../src/data/analytics/revenueDistribution.js";
+import { recentTransactionsData } from "../src/data/analytics/recentTransactions.js";
 import { revenueTrendsData } from "../src/data/analytics/revenueTrends.js";
+import { salesChannelsData } from "../src/data/analytics/salesChannels.js";
 import { todaySalesData } from "../src/data/analytics/todaySales.js";
-import { totalProfitMonthsData } from "../src/data/analytics/totalProfitMonths.js";
-import { totalProfitProductsData } from "../src/data/analytics/totalProfitProducts.js";
+import { topCustomersData } from "../src/data/analytics/topCustomers.js";
 import { yearOverviewData } from "../src/data/analytics/yearOverview.js";
 import { customersData } from "../src/data/customers.js";
 import { eventsData } from "../src/data/events.js";
@@ -45,11 +47,13 @@ const main = async () => {
     await tx.revenuePerCountry.deleteMany();
     await tx.revenueOverTime.deleteMany();
     await tx.todaySales.deleteMany();
-    await tx.totalProfitMonth.deleteMany();
-    await tx.totalProfitProduct.deleteMany();
     await tx.yearOverview.deleteMany();
     await tx.marketMetrics.deleteMany();
-    await tx.revenueDistribution.deleteMany();
+    await tx.kpi.deleteMany();
+    await tx.recentTransaction.deleteMany();
+    await tx.topCustomer.deleteMany();
+    await tx.salesChannel.deleteMany();
+    await tx.analyticsSummary.deleteMany();
     await tx.weeklyPerformance.deleteMany();
     await tx.weeklyActivity.deleteMany();
     await tx.notification.deleteMany();
@@ -119,16 +123,6 @@ const main = async () => {
       await tx.todaySales.create({ data: item });
     }
 
-    // Seed for Total Profit Month
-    for (const item of totalProfitMonthsData) {
-      await tx.totalProfitMonth.create({ data: item });
-    }
-
-    // Seed for Total Profit Products
-    for (const item of totalProfitProductsData) {
-      await tx.totalProfitProduct.create({ data: item });
-    }
-
     // Seed for Year Overview
     for (const item of yearOverviewData) {
       await tx.yearOverview.create({ data: item });
@@ -139,10 +133,28 @@ const main = async () => {
       await tx.marketMetrics.create({ data: item });
     }
 
-    // Seed for Revenue Distribution
-    for (const item of revenueDistributionData) {
-      await tx.revenueDistribution.create({ data: item });
+    // Seed for KPIs
+    for (const item of kpisData) {
+      await tx.kpi.create({ data: item });
     }
+
+    // Seed for Recent Transactions
+    for (const item of recentTransactionsData) {
+      await tx.recentTransaction.create({ data: item });
+    }
+
+    // Seed for Top Customers
+    for (const item of topCustomersData) {
+      await tx.topCustomer.create({ data: item });
+    }
+
+    // Seed for Sales Channels
+    for (const item of salesChannelsData) {
+      await tx.salesChannel.create({ data: item });
+    }
+
+    // Seed for Analytics Summary (single row)
+    await tx.analyticsSummary.create({ data: analyticsSummaryData });
 
     // Seed for Weekly Performance
     for (const item of weeklyPerformanceData) {

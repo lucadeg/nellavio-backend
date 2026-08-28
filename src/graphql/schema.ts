@@ -2,6 +2,7 @@ import { GraphQLList, GraphQLObjectType, GraphQLSchema } from "graphql";
 
 import { prisma } from "../db.js";
 import {
+  AnalyticsSummaryType,
   AnalyticsType,
   AssetType,
   BestSellingProductType,
@@ -10,18 +11,19 @@ import {
   EventType,
   FourSmallCardType,
   HomepageType,
+  KpiType,
   MarketMetricsType,
   NotificationType,
   OrderType,
   ProductType,
-  RevenueDistributionType,
+  RecentTransactionType,
   RevenueOverTimeType,
   RevenuePerCountryType,
   RevenueTrendType,
+  SalesChannelType,
   ThreeSmallCardType,
   TodaySalesType,
-  TotalProfitMonthType,
-  TotalProfitProductsType,
+  TopCustomerType,
   WeeklyActivityType,
   WeeklyPerformanceType,
   YearOverviewType,
@@ -108,19 +110,6 @@ const RootQuery = new GraphQLObjectType({
         return prisma.todaySales.findMany();
       },
     },
-    totalProfitMonths: {
-      type: new GraphQLList(TotalProfitMonthType),
-      resolve() {
-        return prisma.totalProfitMonth.findMany();
-      },
-    },
-    totalProfitProducts: {
-      type: new GraphQLList(TotalProfitProductsType),
-      resolve() {
-        return prisma.totalProfitProduct.findMany();
-      },
-    },
-
     yearOverview: {
       type: new GraphQLList(YearOverviewType),
       resolve() {
@@ -131,12 +120,6 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(MarketMetricsType),
       resolve() {
         return prisma.marketMetrics.findMany();
-      },
-    },
-    revenueDistribution: {
-      type: new GraphQLList(RevenueDistributionType),
-      resolve() {
-        return prisma.revenueDistribution.findMany();
       },
     },
     weeklyPerformance: {
@@ -159,37 +142,48 @@ const RootQuery = new GraphQLObjectType({
     },
     analytics: {
       type: AnalyticsType,
-      resolve() {
-        return Promise.all([
-          prisma.asset.findMany(),
-          prisma.revenueTrend.findMany(),
-          prisma.todaySales.findMany(),
-          prisma.totalProfitProduct.findMany(),
-          prisma.totalProfitMonth.findMany(),
-          prisma.yearOverview.findMany(),
-          prisma.marketMetrics.findMany(),
-          prisma.revenueDistribution.findMany(),
-        ]).then(
-          ([
+      resolve: async () => {
+        try {
+          const [
             assets,
             revenueTrends,
             todaySales,
-            totalProfitProducts,
-            totalProfitMonths,
             yearOverview,
             marketMetrics,
-            revenueDistribution,
-          ]) => ({
+            kpis,
+            recentTransactions,
+            topCustomers,
+            salesChannels,
+            summary,
+          ] = await Promise.all([
+            prisma.asset.findMany(),
+            prisma.revenueTrend.findMany(),
+            prisma.todaySales.findMany(),
+            prisma.yearOverview.findMany(),
+            prisma.marketMetrics.findMany(),
+            prisma.kpi.findMany(),
+            prisma.recentTransaction.findMany(),
+            prisma.topCustomer.findMany(),
+            prisma.salesChannel.findMany(),
+            prisma.analyticsSummary.findFirst(),
+          ]);
+
+          return {
             assets,
             revenueTrends,
             todaySales,
-            totalProfitProducts,
-            totalProfitMonths,
             yearOverview,
             marketMetrics,
-            revenueDistribution,
-          }),
-        );
+            kpis,
+            recentTransactions,
+            topCustomers,
+            salesChannels,
+            summary,
+          };
+        } catch (error) {
+          console.error("Failed to resolve analytics query:", error);
+          throw error;
+        }
       },
     },
     homepage: {
@@ -244,16 +238,18 @@ const schema: GraphQLSchema = new GraphQLSchema({
     NotificationType,
     OrderType,
     ProductType,
-    RevenueDistributionType,
     RevenueOverTimeType,
     RevenuePerCountryType,
     TodaySalesType,
-    TotalProfitMonthType,
-    TotalProfitProductsType,
     YearOverviewType,
     MarketMetricsType,
     WeeklyPerformanceType,
     WeeklyActivityType,
+    KpiType,
+    RecentTransactionType,
+    TopCustomerType,
+    SalesChannelType,
+    AnalyticsSummaryType,
     AnalyticsType,
     HomepageType,
   ],

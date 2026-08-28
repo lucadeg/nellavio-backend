@@ -51,11 +51,8 @@ describe("GraphQL Queries", () => {
     mockPrisma.asset.findMany.mockResolvedValue([]);
     mockPrisma.revenueTrend.findMany.mockResolvedValue([]);
     mockPrisma.todaySales.findMany.mockResolvedValue([]);
-    mockPrisma.totalProfitProduct.findMany.mockResolvedValue([]);
-    mockPrisma.totalProfitMonth.findMany.mockResolvedValue([]);
     mockPrisma.yearOverview.findMany.mockResolvedValue([]);
     mockPrisma.marketMetrics.findMany.mockResolvedValue([]);
-    mockPrisma.revenueDistribution.findMany.mockResolvedValue([]);
 
     // depth 3: analytics → assets → id/name/industry/sales/delta/deltaType/status
     const response = await sendGraphQL(

@@ -217,27 +217,6 @@ export const TodaySalesType = new GraphQLObjectType({
   }),
 });
 
-// TotalProfitMonth Type
-export const TotalProfitMonthType = new GraphQLObjectType({
-  name: "TotalProfitMonth",
-  fields: () => ({
-    id: { type: GraphQLString },
-    month: { type: GraphQLString },
-    sales: { type: GraphQLFloat },
-  }),
-});
-
-// TotalProfitProducts Type
-export const TotalProfitProductsType = new GraphQLObjectType({
-  name: "TotalProfitProducts",
-  fields: () => ({
-    id: { type: GraphQLString },
-    title: { type: GraphQLString },
-    value: { type: GraphQLFloat },
-    metric: { type: GraphQLString },
-  }),
-});
-
 // YearOverview Type
 export const YearOverviewType = new GraphQLObjectType({
   name: "YearOverview",
@@ -262,14 +241,59 @@ export const MarketMetricsType = new GraphQLObjectType({
   }),
 });
 
-// RevenueDistribution Type
-export const RevenueDistributionType = new GraphQLObjectType({
-  name: "RevenueDistribution",
+// Kpi Type
+export const KpiType = new GraphQLObjectType({
+  name: "Kpi",
   fields: () => ({
     id: { type: GraphQLString },
+    key: { type: GraphQLString },
+    value: { type: GraphQLFloat },
+    change: { type: GraphQLFloat },
+    format: { type: GraphQLString },
+  }),
+});
+
+// RecentTransaction Type
+export const RecentTransactionType = new GraphQLObjectType({
+  name: "RecentTransaction",
+  fields: () => ({
+    id: { type: GraphQLString },
+    orderId: { type: GraphQLString },
+    product: { type: GraphQLString },
     category: { type: GraphQLString },
-    inStore: { type: GraphQLInt },
-    online: { type: GraphQLInt },
+    amount: { type: GraphQLFloat },
+    status: { type: GraphQLString },
+  }),
+});
+
+// TopCustomer Type
+export const TopCustomerType = new GraphQLObjectType({
+  name: "TopCustomer",
+  fields: () => ({
+    id: { type: GraphQLString },
+    name: { type: GraphQLString },
+    handle: { type: GraphQLString },
+    amount: { type: GraphQLFloat },
+    tier: { type: GraphQLString },
+  }),
+});
+
+// SalesChannel Type
+export const SalesChannelType = new GraphQLObjectType({
+  name: "SalesChannel",
+  fields: () => ({
+    id: { type: GraphQLString },
+    key: { type: GraphQLString },
+    share: { type: GraphQLInt },
+  }),
+});
+
+// AnalyticsSummary Type (single row)
+export const AnalyticsSummaryType = new GraphQLObjectType({
+  name: "AnalyticsSummary",
+  fields: () => ({
+    id: { type: GraphQLString },
+    todaySalesTotal: { type: GraphQLFloat },
   }),
 });
 
@@ -279,11 +303,13 @@ export const AnalyticsType = new GraphQLObjectType({
     assets: { type: new GraphQLList(AssetType) },
     revenueTrends: { type: new GraphQLList(RevenueTrendType) },
     todaySales: { type: new GraphQLList(TodaySalesType) },
-    totalProfitProducts: { type: new GraphQLList(TotalProfitProductsType) },
-    totalProfitMonths: { type: new GraphQLList(TotalProfitMonthType) },
     yearOverview: { type: new GraphQLList(YearOverviewType) },
     marketMetrics: { type: new GraphQLList(MarketMetricsType) },
-    revenueDistribution: { type: new GraphQLList(RevenueDistributionType) },
+    kpis: { type: new GraphQLList(KpiType) },
+    recentTransactions: { type: new GraphQLList(RecentTransactionType) },
+    topCustomers: { type: new GraphQLList(TopCustomerType) },
+    salesChannels: { type: new GraphQLList(SalesChannelType) },
+    summary: { type: AnalyticsSummaryType },
   }),
 });
 
