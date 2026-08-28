@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

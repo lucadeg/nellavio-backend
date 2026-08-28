@@ -9,7 +9,7 @@ import {
   it,
 } from "vitest";
 
-import packageJson from "../../package.json";
+import packageJson from "../../package.json" with { type: "json" };
 import { createTestApp } from "./helpers/buildTestApp.js";
 import { mockPrisma } from "./helpers/mockPrisma.js";
 
